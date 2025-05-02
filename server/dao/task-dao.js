@@ -1,17 +1,30 @@
-const fs = reqiuire("fs");
+const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 
 const taskFolderPath = path.join(__dirname, "storage", "tasks")
 
+// TASK CREATE METHOD (POST)
 function create(task) {
-    
-    task.id = crypto.randomBytes(16).toString("hex");
+    try {
+        let newTask = {
+            ...task,
+        }
 
-    const filePath = path.join(taskFolderPath, `${task.id}.json`);
-    const fileData = JSON.stringify(task);
+        newTask.id = crypto.randomBytes(16).toString("hex");
+        newTask.date = new Date().toISOString();
 
-    fs.writeFileSync(filePath, fileData, "utf8");
+        const filePath = path.join(taskFolderPath, `${newTask.id}.json`);
+        const fileData = JSON.stringify(newTask);
 
-    return task;
+        fs.writeFileSync(filePath, fileData, "utf8");
+
+        return newTask;
+    } catch (error) {
+        throw { code: "failedToCreateTask", task: error.newTask };
+    }
+}
+
+module.exports = {
+    create
 }

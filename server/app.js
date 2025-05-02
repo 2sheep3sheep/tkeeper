@@ -2,13 +2,23 @@ const express = require('express')
 const app = express()
 const port = 5000
 
+
+app.use(express.json());
+
 // Task methods
 
 const taskController = require("./controller/task");
 app.use("/task", taskController);
 
 
-
+console.log(
+  JSON.stringify(
+    {
+      title: "Do This",
+      description: "Do this thing please"
+    }
+  )
+)
 
 
 
