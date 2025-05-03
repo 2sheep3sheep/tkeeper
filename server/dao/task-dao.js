@@ -28,6 +28,34 @@ function create(task) {
     }
 }
 
+// LIST ALL TASKS (with type filter) 
+function list( taskCategory="all" ) {
+    try {
+        const files = fs.readdirSync(taskFolderPath);
+
+        let taskList = { tasks: [] };
+
+        for ( fileName of files ) {
+            var taskData = JSON.parse( fs.readFileSync( path.join( taskFolderPath, fileName) ) );
+            if (
+                ( taskCategory == "all" ) ||
+                ( taskCategory == "unassigned" && !taskData.solverID ) ||
+                ( taskCategory == "unsolved"   &&  taskData.solverID  && !taskData.completed) ||
+                ( taskCategory == "completed"  &&  taskData.solverID  &&  taskData.completed) 
+            ) {
+                taskList.tasks.push( taskData )
+            }
+        }
+        console.log(taskList);
+        return taskList;
+
+    } catch (error) {
+        console.log(error)
+    throw { code: "failedToListTasks" };
+    }
+}
+
 module.exports = {
-    create
+    create,
+    list
 }
