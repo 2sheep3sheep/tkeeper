@@ -12,4 +12,9 @@ const AssignSolverAbl = require("../abl/task/assignSolverAbl");
 router.post("/assignSolver", AssignSolverAbl);
 
 
+const MarkAsCompletedAbl = require("../abl/task/markAsCompletedAbl");
+router.post("/markAsCompleted", MarkAsCompletedAbl);
+
+
+
 module.exports = router;

@@ -95,9 +95,29 @@ function setSolverID(taskID,solverID) {
     }
 }
 
+// COMPLETE TASK
+function setCompletedToTrue(taskID) {
+    try {
+        let task = get(taskID);
+
+        task.completed = true;
+
+        const filePath = path.join(taskFolderPath, `${task.id}.json`);
+        const fileData = JSON.stringify(task);
+
+        fs.writeFileSync(filePath, fileData, "utf8");
+
+        return task;
+    } catch (error) {
+        throw { code: "failedToMarkTaskAsCompleted", task: error.task };
+    }
+}
+
+
 module.exports = {
     create,
     list,
     get,
-    setSolverID
+    setSolverID,
+    setCompletedToTrue
 }
