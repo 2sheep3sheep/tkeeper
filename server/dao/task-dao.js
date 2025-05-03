@@ -4,6 +4,28 @@ const crypto = require("crypto");
 
 const taskFolderPath = path.join(__dirname, "storage", "tasks")
 
+
+// TASK GET METHOD
+function get(taskID) {
+    try {
+        const filePath = path.join(taskFolderPath, `${taskID}.json`);
+
+        if (fs.existsSync(filePath)) {
+
+            const fileData = fs.readFileSync(filePath, "utf8");
+            const jsonData = JSON.parse(fileData);
+
+            return jsonData;
+        } else {
+            return undefined;
+        }
+        
+    } catch (error) {
+        if (error.code === "ENOENT") return null;
+        throw { code: "failedToReadSolver", taskID: error.taskID };
+    }
+}
+
 // TASK CREATE METHOD (POST)
 function create(task) {
     try {
@@ -46,7 +68,7 @@ function list( taskCategory="all" ) {
                 taskList.tasks.push( taskData )
             }
         }
-        
+
         return taskList;
 
     } catch (error) {
@@ -55,7 +77,27 @@ function list( taskCategory="all" ) {
     }
 }
 
+// ASSIGN SOLVER TO TASK
+function setSolverID(taskID,solverID) {
+    try {
+        let task = get(taskID);
+
+        task.solverID = solverID;
+
+        const filePath = path.join(taskFolderPath, `${task.id}.json`);
+        const fileData = JSON.stringify(task);
+
+        fs.writeFileSync(filePath, fileData, "utf8");
+
+        return task;
+    } catch (error) {
+        throw { code: "failedToAssignSolverToTask", task: error.task };
+    }
+}
+
 module.exports = {
     create,
-    list
+    list,
+    get,
+    setSolverID
 }
