@@ -46,7 +46,7 @@ function list( taskCategory="all" ) {
                 taskList.tasks.push( taskData )
             }
         }
-        console.log(taskList);
+        
         return taskList;
 
     } catch (error) {

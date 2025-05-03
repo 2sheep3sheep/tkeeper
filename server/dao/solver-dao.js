@@ -50,7 +50,30 @@ function create(solver) {
     }
 }
 
+
+// LIST ALL SOLVERS
+function list() {
+    try {
+        const files = fs.readdirSync(solverFolderPath);
+
+        let solverList = { solvers: [] };
+
+        for ( fileName of files ) {
+            var solverData = JSON.parse( fs.readFileSync( path.join( solverFolderPath, fileName) ) );
+            solverList.solvers.push( solverData )
+        }
+        
+        return solverList;
+
+    } catch (error) {
+        console.log(error)
+    throw { code: "failedToListSolvers" };
+    }
+}
+
+
 module.exports = {
     create,
-    get
+    get,
+    list
 }
