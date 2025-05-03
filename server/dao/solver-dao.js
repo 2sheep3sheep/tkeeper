@@ -4,6 +4,32 @@ const crypto = require("crypto");
 
 const solverFolderPath = path.join(__dirname, "storage", "solvers")
 
+
+// SOLVER GET METHOD
+function get(solverID) {
+    try {
+        const filePath = path.join(solverFolderPath, `${solverID}.json`);
+
+        if (fs.existsSync(filePath)) {
+
+            const fileData = fs.readFileSync(filePath, "utf8");
+            const jsonData = JSON.parse(fileData);
+
+            console.log(jsonData);
+
+            return jsonData;
+        } else {
+            return undefined;
+        }
+        
+    } catch (error) {
+        if (error.code === "ENOENT") return null;
+        throw { code: "failedToReadSolver", solverID: error.solverID };
+    }
+}
+
+
+
 // SOLVER CREATE METHOD (POST)
 function create(solver) {
     try {
@@ -25,5 +51,6 @@ function create(solver) {
 }
 
 module.exports = {
-    create
+    create,
+    get
 }

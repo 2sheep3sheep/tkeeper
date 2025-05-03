@@ -2,6 +2,7 @@ const Ajv = require("ajv");
 const ajv = new Ajv();
 
 const taskDao = require("../../dao/task-dao.js");
+const solverDao = require("../../dao/solver-dao.js");
 
 const schema = {
     type: "object",
@@ -29,6 +30,21 @@ async function CreateAbl(req, res) {
             });
             return;  // In case of invalid input, exit function
         }
+        
+        // Validate if solver with solverID exists
+        
+        if (task.solverID) {
+            const solver = solverDao.get(task.solverID);
+
+            if (!solver) {     
+                res.status(400).json({
+                    code: "solverDoesNotExist",
+                    message: `solver with id ${task.solverID} does not exist`
+                });
+                return;
+            }
+        }
+
 
         // Store task entry into file
         try {
