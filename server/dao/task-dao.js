@@ -13,6 +13,9 @@ function create(task) {
 
         newTask.id = crypto.randomBytes(16).toString("hex");
         newTask.date = new Date().toISOString();
+        
+        // JS does not store undefined attributes, but for posterity, the attribute would have the value "undefined" in case no solver was set
+        newTask.solverID = newTask.solverID ?? undefined;           
 
         const filePath = path.join(taskFolderPath, `${newTask.id}.json`);
         const fileData = JSON.stringify(newTask);

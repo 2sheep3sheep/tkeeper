@@ -11,17 +11,6 @@ const taskController = require("./controller/task");
 app.use("/task", taskController);
 
 
-console.log(
-  JSON.stringify(
-    {
-      title: "Do This",
-      description: "Do this thing please"
-    }
-  )
-)
-
-
-
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })

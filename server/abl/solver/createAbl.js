@@ -1,48 +1,47 @@
 const Ajv = require("ajv");
 const ajv = new Ajv();
 
-const taskDao = require("../../dao/task-dao.js");
+const solverDao = require("../../dao/solver-dao.js");
 
 const schema = {
     type: "object",
     properties: {
-        title: { type: "string", maxLength:64 },
-        description: { type: "string", maxLength:256 },
-        solverID: { type: "string" }
+        name: { type: "string", maxLength: 32 },
+        iconID: { type: "int" }
     },
-    required: ["title"],
+    required: ["name"],
     additionalProperties: false
 };
 
 async function CreateAbl(req, res) {
     try {
-        let task = req.body;
+        let solver = req.body;
 
-        const valid = ajv.validate(schema, task);
+        const valid = ajv.validate(schema, solver);
 
         // Validate input
         if (!valid) {
             res.status(400).json({
                 code: "dtoInIsNotValid",
-                task: "dtoIn is not valid",
+                solver: "dtoIn is not valid",
                 validationError: ajv.errors
             });
             return;  // In case of invalid input, exit function
         }
 
-        // Store task entry into file
+        // Store solver entry into file
         try {
-            task = taskDao.create(task);
+            solver = solverDao.create(solver);
         } catch (e) {
             res.status(400).json({
                 ...e,
             })
         }
 
-        res.json(task);     // Update http request response with newly created task data
+        res.json(solver);     // Update http request response with newly created solver data
 
     } catch (e) {
-        res.status(500).json({ task: e.task});
+        res.status(500).json({ solver: e.solver});
     }
 }
 
