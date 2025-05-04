@@ -25,7 +25,7 @@ async function CreateAbl(req, res) {
         if (!valid) {
             res.status(400).json({
                 code: "dtoInIsNotValid",
-                task: "dtoIn is not valid",
+                message: "dtoIn is not valid",
                 validationError: ajv.errors
             });
             return;  // In case of invalid input, exit function
