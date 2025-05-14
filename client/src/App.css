@@ -28,6 +28,44 @@
   color: #61dafb;
 }
 
+
+.dashboard-header {
+  color: black;
+  background-color: #80DED6;
+
+  position: sticky;
+  top: 0;
+  padding: 20px;
+  width:auto;
+  height: min-content;
+  font-size: 28px;
+  font-weight: 200;
+  font-family: monospace;
+}
+
+.dashboard-footer {
+  color: black;
+  background-color: #80DED6;
+
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding: 20px;
+  width:100%;
+  height: min-content;
+  font-size: 28px;
+  font-weight: 200;
+  font-family: monospace;
+}
+
+.dashboard-content {
+  width: auto;
+  background-color: white;
+  margin: 40px;
+}
+
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
