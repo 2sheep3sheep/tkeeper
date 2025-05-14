@@ -33,12 +33,13 @@
   color: black;
   background-color: #80DED6;
 
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
   padding: 20px;
-  width:auto;
+  width:100%;
   height: min-content;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 200;
   font-family: monospace;
 }
@@ -53,7 +54,7 @@
   padding: 20px;
   width:100%;
   height: min-content;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 200;
   font-family: monospace;
 }
@@ -61,10 +62,22 @@
 .dashboard-content {
   width: auto;
   background-color: white;
-  margin: 40px;
+  margin: 10px;
+  margin-top: 80px;
+  margin-bottom: 80px;
 }
 
+.task-title {
+  font-size: 20px;
+  font-weight: 800;
+  font-family: monospace;
+}
 
+.task-description {
+  font-size: 18px;
+  font-weight: 400;
+  font-family: monospace;
+}
 
 @keyframes App-logo-spin {
   from {
