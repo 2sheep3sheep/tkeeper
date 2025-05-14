@@ -7,7 +7,7 @@ import AssignIcon from "@mui/icons-material/Person"
 function TaskCard(props) {
 
     let assignButton = (
-        <Tooltip title="Assign Solver" placement="right">
+        <Tooltip title="Assign Solver" placement="right" arrow>
             <IconButton
                 sx={{
                     alignSelf:"flex-end"
@@ -15,10 +15,10 @@ function TaskCard(props) {
                 <AssignIcon
                     sx={{
                         fontSize:"40px",
-                        margin:"-10px",
+                        margin:"-8px",
                         padding:"4px",
                         color:"black",
-                        backgroundColor:"#80DEDF",
+                        backgroundColor:"#80DED6",
                         borderRadius:"100%"
                     }}
                 />
@@ -27,7 +27,13 @@ function TaskCard(props) {
     )
 
     return (
-        <Card variant="outlined" width="100px">
+        <Card variant="outlined" width="100px" 
+            sx = {{
+                borderRadius:"10px",
+                borderWidth:"2px"
+            }}
+
+        >
             <CardContent>
 
                 <Stack
