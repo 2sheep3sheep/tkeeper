@@ -36,7 +36,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  padding: 20px;
+  padding: 10px;
   width:100%;
   box-sizing: border-box;
   height: min-content;
@@ -47,13 +47,13 @@
 
 .dashboard-footer {
   color: black;
-  background-color: transparent;
+  background-color: white;
 
   position: fixed;
   left: 0;
   bottom: 0;
   width:100%;
-  padding: 30px;
+  padding: 20px;
   box-sizing: border-box;
   height: min-content;
   font-size: 32px;
@@ -66,7 +66,7 @@
   background-color: white;
   margin: 10px;
   margin-top: 80px;
-  margin-bottom: 80px;
+  margin-bottom: 120px;
 }
 
 .task-title {
@@ -76,6 +76,11 @@
 }
 
 .task-description {
+  font-size: 18px;
+  font-weight: 400;
+  font-family: monospace;
+}
+.solver-name {
   font-size: 18px;
   font-weight: 400;
   font-family: monospace;

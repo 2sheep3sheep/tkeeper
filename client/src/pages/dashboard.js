@@ -6,6 +6,7 @@ import AddIcon from "@mui/icons-material/Add"
 import * as React from "react";
 
 import CategorySelector from "../components/category-selector";
+import PageSelector from "../components/page-selector";
 
 function Dashboard() {
 
@@ -43,7 +44,9 @@ function Dashboard() {
                 </Grid>
             </div>
             
-            <div class="dashboard-header"> Dashboard </div>
+            <div class="dashboard-header"> 
+                    <PageSelector selectedPage={0} />
+            </div>
             <div class="dashboard-footer">
                 <Stack
                     direction="row"

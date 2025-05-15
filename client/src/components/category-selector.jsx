@@ -6,7 +6,7 @@ import UnassignedIcon from "@mui/icons-material/Close"
 import SolverIcon from "@mui/icons-material/Person"
 import CompletedIcon from "@mui/icons-material/Check"
 
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { ToggleButton, ToggleButtonGroup, Tooltip } from "@mui/material";
 
 function CategorySelector(props) {
     
@@ -41,34 +41,45 @@ function CategorySelector(props) {
                 padding:"-10px"
             }}
         >
-            <ToggleButton value="all"
-                sx={buttonstyle}
-            >              
-                <AllIcon
-                style={{fontSize:(iconsize)}}    
-            />
-            </ToggleButton>
-            <ToggleButton value="unassigned"
-                sx={buttonstyle}
-            >                  
-                <UnassignedIcon
-                style={{fontSize:(iconsize)}}    
-            />
-            </ToggleButton>
-            <ToggleButton value="unsolved"
-                sx={buttonstyle}
-            >                      
-                <SolverIcon
-                style={{fontSize:(iconsize)}}    
-            />
-            </ToggleButton>
-            <ToggleButton value="completed"
-                sx={buttonstyle}
-            >                    
-                <CompletedIcon
-                style={{fontSize:(iconsize)}}    
-            />
-            </ToggleButton>
+            <Tooltip title="All Tasks" arrow>
+                <ToggleButton value="all"
+                    sx={buttonstyle}
+                >              
+                    <AllIcon
+                    style={{fontSize:(iconsize)}}    
+                />
+                </ToggleButton>
+            </Tooltip>
+            
+            <Tooltip title="Unassigned" arrow>
+                <ToggleButton value="unassigned"
+                    sx={buttonstyle}
+                >                  
+                    <UnassignedIcon
+                    style={{fontSize:(iconsize)}}    
+                />
+                </ToggleButton>
+            </Tooltip>
+
+            <Tooltip title="Unsolved" arrow>
+                <ToggleButton value="unsolved"
+                    sx={buttonstyle}
+                >                      
+                    <SolverIcon
+                    style={{fontSize:(iconsize)}}    
+                />
+                </ToggleButton>
+            </Tooltip>
+
+            <Tooltip title="Completed" arrow>
+                <ToggleButton value="completed"
+                    sx={buttonstyle}
+                >                    
+                    <CompletedIcon
+                    style={{fontSize:(iconsize)}}    
+                />
+                </ToggleButton>
+            </Tooltip>
         </ToggleButtonGroup>
     )
 }

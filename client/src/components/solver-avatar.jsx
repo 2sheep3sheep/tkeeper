@@ -10,7 +10,7 @@ function SolverAvatar(props) {
             }}
         >
             <Avatar>A</Avatar>
-            {props.show_name ? (<div>Solver Name</div>) : null}
+            {props.show_name ? (<div class="solver-name">Solver Name</div>) : null}
         </Stack>
     )
 }
