@@ -7,6 +7,7 @@ import { TaskListContext } from "../data/task-list-provider";
 import { useContext } from "react";
 
 import DashboardContent from "./dashboard-content";
+import SolverListProvider from "../data/solver-list-provider";
 
 function Dashboard() {
 
@@ -25,7 +26,9 @@ function Dashboard() {
 
     return (
         <TaskListProvider>
-           <DashboardContent/>
+            <SolverListProvider>
+                <DashboardContent/>
+            </SolverListProvider>
         </TaskListProvider>
     );
 

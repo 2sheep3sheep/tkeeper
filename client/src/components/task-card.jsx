@@ -79,13 +79,18 @@ function TaskCard(props) {
         </div>
     */
 
+    let formattedDescription = ""
+    if (props.description) {
+        formattedDescription = (props.description.split("\n").map( (item) => { return (<span>{item}<br/></span>) } ) )
+    }
+        
     return (
         <Card variant="outlined" width="100px" 
             sx = {{
                 borderRadius:"10px",
                 borderWidth:"2px",
                 height:"200px",
-                height:"220px"
+                height:"230px"
             }}
 
         >
@@ -102,7 +107,7 @@ function TaskCard(props) {
                         //marginTop:"16px"
                     }}>
                         <div class="task-title">{props.title ?? "Task Title"}</div>    
-                        <div class="task-description">{props.description ?? ""}</div>
+                        <div class="task-description">{formattedDescription}</div>
                     </div>
                     <Stack
                         direction="row"
@@ -111,11 +116,22 @@ function TaskCard(props) {
                             justifyContent:"space-between"
                         }}
                     >
-                        { props.solverID ? (<SolverAvatar show_name="true"/>) : <div></div> }
+                        { props.solver_name ? (<SolverAvatar show_name="true" solver_name={props.solver_name}/>) : <div></div> }
                         {!props.solverID ? assignButton : props.completed ? null : completeButton}
 
                     </Stack>
-                    <div class="task-date">{props.date}</div>
+                    <Stack direction="row"
+                        sx={{
+                            paddingTop:"10px",
+                            justifyContent:"space-between"
+                        }}
+                    >
+                        <div class="task-date">{props.date}</div>
+                        <div class="task-date">{
+                                !props.solverID ? "Unassigned" : props.completed ? "Completed!" : "Unsolved"
+                            
+                            }</div>
+                    </Stack>
                 </Stack>
             </CardContent>
         </Card>

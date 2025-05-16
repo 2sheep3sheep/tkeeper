@@ -12,7 +12,6 @@ import { TaskListContext } from "../data/task-list-provider";
 
 function CategorySelector(props) {
     
-    const [category, setCategory] = React.useState("all");
 
     const { selectedCategory, setSelectedCategory } = useContext(
         TaskListContext
@@ -20,7 +19,6 @@ function CategorySelector(props) {
 
     const handleCategoryChange = (event,newCategory) => {
         if (newCategory != null) {
-            setCategory(newCategory);
             setSelectedCategory(newCategory);
         }
     }
@@ -34,7 +32,7 @@ function CategorySelector(props) {
 
     return (
         <ToggleButtonGroup
-            value={category}
+            value={selectedCategory}
             exclusive
             onChange={handleCategoryChange}
             size="large"

@@ -1,21 +1,34 @@
-import { Button, Card, CardContent, Divider, Modal, Stack, TextField } from "@mui/material";
+import { Button, Card, CardContent, Divider, InputLabel, MenuItem, Modal, Select, Stack, TextField } from "@mui/material";
 import { useState } from "react";
 import FetchHelper from "../fetch-helper";
 import { useContext } from "react";
 import { TaskListContext } from "../data/task-list-provider";
+import { SolverListContext } from "../data/solver-list-provider";
+import SolverAvatar from "../components/solver-avatar";
 
 
 function DashboardModals(props) {    
-    const { state, data, selectedCategory, setSelectedCategory } = useContext( TaskListContext );
+    const { state, data, selectedCategory, setSelectedCategory, solver_data } = useContext( TaskListContext );
 
-    function handleClose() {
+    let solvers = [];
 
+    if ( (solver_data ?? null) != null) {
+        /*
+        for (var i=0; i< solver_data.solvers.length; i++) {
+
+            var solverData = solver_data.solvers[i]
+
+            solvers.push( (<SolverAvatar 
+                show_name={true}
+                solver_name = {solverData.name}    
+            />) )
+        }*/
+        solvers = solver_data.solvers    
     }
 
     const [ newTaskTitle, setNewTaskTitle ] = useState("")
     const [ newTaskDescription, setNewTaskDescription ] = useState("")
-
-
+    const [ newTaskSolver, setNewTaskSolver ] = useState("undefined")
 
     function updateTaskTitle(event) {
         setNewTaskTitle(event.target.value)
@@ -25,11 +38,16 @@ function DashboardModals(props) {
         setNewTaskDescription(event.target.value)
     }
 
+    function updateTaskSolver(event) {
+        setNewTaskSolver(event.target.value)
+    }
+
     async function createTask() {
 
         const newTaskData = {
             title: newTaskTitle,
-            description: newTaskDescription
+            description: newTaskDescription,
+            solverID: (newTaskSolver==="undefined" ? undefined : newTaskSolver)
         }
 
         //validate client-side input
@@ -41,6 +59,12 @@ function DashboardModals(props) {
 
         if (result.ok) {
             props.setCreateTaskModal(false)
+
+            var createdInCategory = "all"
+            if ( !result.data.solverID ) createdInCategory = "unassigned";
+            if ( result.data.solverID ) createdInCategory = "unsolved";
+
+            setSelectedCategory(createdInCategory)
             data.tasks.push(result.data)
         }
     }
@@ -70,7 +94,7 @@ function DashboardModals(props) {
                         <CardContent>
                             <div class="task-title">Create New Task</div>
                             <Divider sx={{my:2}}/>
-                            <TextField id="outlined-basic" 
+                            <TextField
                                 label="Title" 
                                 variant="outlined" 
                                 required 
@@ -80,8 +104,10 @@ function DashboardModals(props) {
 
                                 value={newTaskTitle}
                                 onChange={updateTaskTitle}
+                                //error={false}
+                                //helperText="A title is required"
                             />
-                            <TextField id="outlined-basic"
+                            <TextField
                                 label="Description"
                                 variant="outlined"
                                 sx={{my:2}}
@@ -92,6 +118,28 @@ function DashboardModals(props) {
                                 value={newTaskDescription}
                                 onChange={updateTaskDescription}
                             />
+                            
+                            <Select
+                                variant="outlined" 
+                                style={{width:"100%", marginBottom:"18px"}}
+                                //error={false}
+                                //helperText="A title is required"
+                                value={newTaskSolver}
+                                onChange={updateTaskSolver}
+                            >
+                                <MenuItem value="undefined">
+                                    <SolverAvatar show_name solver_name="Unassigned" undefined_solver/>
+                                </MenuItem>
+                                {
+                                    solvers.map(
+                                        (item) => (
+                                            <MenuItem value={item.id}>
+                                                <SolverAvatar show_name solver_name={item.name}/>
+                                            </MenuItem>
+                                        )
+                                    )
+                                }
+                            </Select>
 
                             <Stack
                                 direction="row"

@@ -15,6 +15,15 @@ function TaskListProvider({children}) {
             error: null,
         }
     )
+    
+    const [solverListDto, setSolverListDto] = useState(
+        {
+            state: "ready",
+            data: null,
+            error: null,
+        }
+    )
+
 
     async function handleLoad() {
     
@@ -46,11 +55,39 @@ function TaskListProvider({children}) {
     )
 
 
+    async function handleSolverLoad() {
+    
+        setSolverListDto(
+            (current) => {
+                return { ...current, data: undefined, state: "pending" };
+            }
+        );
+
+        const result = await FetchHelper.solver.list({category:selectedCategory});
+        
+        console.log(result)
+
+        setSolverListDto(
+            (current) => {
+                if (result.ok) {
+                    return { ...current, state:"ready", data: result.data, error:null };
+                }else{
+                    return { ...current, state:"error", error: result.data};
+                }
+            }
+        )
+
+    }
+    useEffect(
+        () => { handleSolverLoad() }, []
+    )
+
     const value = {
         ...taskListDto,
         selectedCategory,
         setSelectedCategory,
-        handlerMap: { handleLoad }
+        handlerMap: { handleLoad },
+        solver_data: solverListDto.data
     }
 
     return (

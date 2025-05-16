@@ -13,7 +13,7 @@ import { useState } from "react";
 
 function DashboardContent() {
 
-    const { state, data, selectedCategory, setSelectedCategory } = useContext( TaskListContext );
+    const { state, data, selectedCategory, setSelectedCategory, solver_data } = useContext( TaskListContext );
 
     const [ createModalOpen, setCreateModalOpen ] = useState(false);
 
@@ -21,10 +21,20 @@ function DashboardContent() {
 
     if ( state === "ready" && (data ?? null) != null) {
 
+        // Solver ID to solver data map 
+        let solver_id_map = {}
+
+        if (solver_data && solver_data.solvers) {
+            for (var s=0; s<solver_data.solvers.length; s++) {
+                var solver = solver_data.solvers[s]
+                solver_id_map[solver.id] = {...solver}
+            }
+        }
+        //
+
         data.tasks.sort( (a,b) => { 
             return new Date(a.date) > new Date(b.date) ? -1 : 1 
         } )
-
 
         for (var i=0; i< data.tasks.length; i++) {
 
@@ -33,7 +43,10 @@ function DashboardContent() {
             taskcards.push( (<TaskCard
                 title = {taskData.title}
                 description = {taskData.description ?? ""}
-                solverID = {taskData.solverID ?? undefined}
+                solverID = {taskData.solverID}
+                solver_name = {
+                    solver_id_map[taskData.solverID] ? solver_id_map[taskData.solverID].name : undefined
+                }
                 completed = {taskData.completed ?? false}
                 date = { new Date(taskData.date).toLocaleDateString() }
             />) )
