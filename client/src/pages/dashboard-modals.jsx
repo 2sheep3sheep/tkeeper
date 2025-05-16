@@ -162,7 +162,7 @@ function DashboardModals(props) {
                                     solvers.map(
                                         (item) => (
                                             <MenuItem value={item.id}>
-                                                <SolverAvatar show_name solver_name={item.name}/>
+                                                <SolverAvatar show_name solver_name={item.name} iconID={item.iconID}/>
                                             </MenuItem>
                                         )
                                     )
@@ -253,6 +253,7 @@ function DashboardModals(props) {
                                 <Select
                                     disabled={awaitingServerResponse}
                                     variant="outlined" 
+                                    shrink
                                     style={{width:"100%", marginBottom:"18px"}}
                                     //error={false}
                                     //helperText="A title is required"
@@ -266,7 +267,7 @@ function DashboardModals(props) {
                                         solvers.map(
                                             (item) => (
                                                 <MenuItem value={item.id}>
-                                                    <SolverAvatar show_name solver_name={item.name}/>
+                                                    <SolverAvatar show_name solver_name={item.name} iconID={item.iconID}/>
                                                 </MenuItem>
                                             )
                                         )

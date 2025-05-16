@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/dashboard";
 import Solvers from "./pages/solvers";
 
+
 function App() {
   return (
     <BrowserRouter>

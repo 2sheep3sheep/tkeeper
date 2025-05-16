@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CircularProgress, Divider, InputLabel, MenuItem, Modal, Select, Stack, TextField } from "@mui/material";
+import { Avatar, Button, Card, CardContent, CircularProgress, Divider, Grid, InputLabel, MenuItem, Modal, Select, Stack, TextField, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { useState } from "react";
 import FetchHelper from "../fetch-helper";
 import { useContext } from "react";
@@ -22,13 +22,19 @@ function SolverModals(props) {
     const [ newSolverData, setNewSolverData ] = useState(
         {
             name:"",
-            iconID:0
+            iconID:"0"
         }
     )
+
+    let iconSelection = []
+    for (var i=0; i<12; i++) {
+        iconSelection.push( String(i) )
+    }
 
     async function createSolver() {
 
         //validate client-side input
+        newSolverData.iconID = Number(newSolverData.iconID)
         console.log(newSolverData);
 
         setAwaitingServerResponse(true)
@@ -112,7 +118,43 @@ function SolverModals(props) {
                                     )
                                 }
                             </Select>*/ }
-                            
+                            <div class="task-description">Choose Icon</div>
+                            <Divider sx={{my:2}}/>
+
+                            <ToggleButtonGroup
+                                style={{width:"100%", marginBottom:"18px"}}
+                                value={newSolverData.iconID}
+                                exclusive
+                                
+                                onChange={
+                                    (event,newValue) => { if (newValue!=null) {setNewSolverData(
+                                        (current) => ({...current, iconID:newValue})    
+                                    )}}
+                                }
+
+
+                            >
+                                <Grid container spacing={0.5} sx={{width:"100%", justifyContent:"space-between"}}>
+                                    { iconSelection.map( (item) => (
+                                        <Grid size={{ xs:3 }}>
+                                            <ToggleButton
+                                                value={item}
+                                                style={{
+                                                    width:"100%",
+                                                    height:"100%",
+                                                    border:"0px"
+                                                }}
+                                            >
+                                                <SolverAvatar
+                                                    width="60px"
+                                                    height="60px"
+                                                    iconID={item}
+                                                />
+                                            </ToggleButton>
+                                        </Grid>
+                                    ) ) }
+                                </Grid>
+                            </ToggleButtonGroup>
 
                             <Stack
                                 direction="row"

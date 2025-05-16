@@ -49,6 +49,9 @@ function DashboardContent() {
                 solver_name = {
                     solver_id_map[taskData.solverID] ? solver_id_map[taskData.solverID].name : undefined
                 }
+                solver_icon = {
+                    solver_id_map[taskData.solverID] ? solver_id_map[taskData.solverID].iconID : undefined
+                }
                 completed = {taskData.completed ?? false}
                 date = { new Date(taskData.date).toLocaleDateString() }
 

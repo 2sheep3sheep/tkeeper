@@ -30,6 +30,7 @@ function SolversContent() {
             solvers.push( (<SolverAvatar 
                 show_name={true}
                 solver_name = {solverData.name}    
+                iconID = {solverData.iconID}
             />) )
         }
     }

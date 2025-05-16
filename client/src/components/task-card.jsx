@@ -129,7 +129,7 @@ function TaskCard(props) {
                             justifyContent:"space-between"
                         }}
                     >
-                        { props.solver_name ? (<SolverAvatar show_name="true" solver_name={props.solver_name}/>) : <div></div> }
+                        { props.solver_name ? (<SolverAvatar show_name="true" solver_name={props.solver_name} iconID={props.solver_icon}/>) : <div></div> }
                         {!props.solverID ? assignButton : props.completed ? null : completeButton}
 
                     </Stack>
