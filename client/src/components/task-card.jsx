@@ -21,7 +21,7 @@ function TaskCard(props) {
                 <AssignIcon
                     sx={{
                         fontSize:"40px",
-                        margin:"-8px",
+                        margin:"-12px",
                         padding:"4px",
                         color:"black",
                         backgroundColor:"#80DED6",
@@ -42,7 +42,7 @@ function TaskCard(props) {
                 <CompleteIcon
                     sx={{
                         fontSize:"40px",
-                        margin:"-8px",
+                        margin:"-12px",
                         padding:"4px",
                         color:"black",
                         backgroundColor:"#80DED6",
@@ -53,47 +53,54 @@ function TaskCard(props) {
         </Tooltip>
     )
 
+    /*
+        <div style={{
+                position:"relative",
+                margin:"0px",
+                padding:"0px",
+                borderWidth:"0px"
+            }}
+        >
+            <div style={{
+                position:"absolute",
+                top:"-8px",
+                right:"-8px",
+                width:"max-content",
+                padding:"0px",
+                margin:"0px"
+            }}>
+                    <IconButton size="small">
+                        <EditIcon fontSize="small"/>
+                    </IconButton>
+                    <IconButton size="small">
+                        <DeleteIcon fontSize="small"/>
+                    </IconButton>
+            </div>
+        </div>
+    */
+
     return (
         <Card variant="outlined" width="100px" 
             sx = {{
                 borderRadius:"10px",
-                borderWidth:"2px"
+                borderWidth:"2px",
+                height:"200px"
             }}
 
         >
             <CardContent>
-                  <div style={{
-                        position:"relative",
-                        margin:"0px",
-                        padding:"0px",
-                        borderWidth:"0px"
-                    }}
-                >
-                    <div style={{
-                        position:"absolute",
-                        top:"-8px",
-                        right:"-8px",
-                        width:"max-content",
-                        padding:"0px",
-                        margin:"0px"
-                    }}>
-                            <IconButton size="large">
-                                <EditIcon fontSize="medium"/>
-                            </IconButton>
-                            <IconButton size="large">
-                                <DeleteIcon fontSize="medium"/>
-                            </IconButton>
-                    </div>
-                </div>
+                
+                {null}
 
                 <Stack
                     spacing={1}
                 >
                     <div style={{
-                        height:"100px"
+                        height:"120px",
+                        //marginTop:"16px"
                     }}>
-                        <div class="task-title">Task Title</div>    
-                        <div class="task-description">Task Description</div>
+                        <div class="task-title">{props.title ?? "Task Title"}</div>    
+                        <div class="task-description">{props.description ?? ""}</div>
                     </div>
                     <Stack
                         direction="row"
@@ -102,9 +109,8 @@ function TaskCard(props) {
                             justifyContent:"space-between"
                         }}
                     >
-                        <SolverAvatar show_name="true"/>
-
-                        {completeButton}
+                        { props.solverID ? (<SolverAvatar show_name="true"/>) : <div></div> }
+                        {!props.solverID ? assignButton : props.completed ? null : completeButton}
 
                     </Stack>
                 </Stack>

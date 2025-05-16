@@ -7,13 +7,22 @@ import SolverIcon from "@mui/icons-material/Person"
 import CompletedIcon from "@mui/icons-material/Check"
 
 import { ToggleButton, ToggleButtonGroup, Tooltip } from "@mui/material";
+import { useContext } from "react";
+import { TaskListContext } from "../data/task-list-provider";
 
 function CategorySelector(props) {
     
     const [category, setCategory] = React.useState("all");
 
+    const { selectedCategory, setSelectedCategory } = useContext(
+        TaskListContext
+    )
+
     const handleCategoryChange = (event,newCategory) => {
-        setCategory(newCategory);
+        if (newCategory != null) {
+            setCategory(newCategory);
+            setSelectedCategory(newCategory);
+        }
     }
 
     let iconsize = "40px"

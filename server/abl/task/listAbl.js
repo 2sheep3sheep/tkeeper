@@ -3,7 +3,7 @@ const taskDao = require("../../dao/task-dao.js");
 
 async function ListAbl(req, res) {
     try {
-        let taskCategoryFilter = req.body;
+        let taskCategoryFilter = req.query;
         
         if ( 
             !taskCategoryFilter ||                              // No JSON body was given
@@ -18,8 +18,13 @@ async function ListAbl(req, res) {
             if (taskCategoryFilter && taskCategoryFilter.category) filterCategory = taskCategoryFilter.category;
 
             let taskList = taskDao.list( filterCategory );
-            res.json(taskList);     // Update http request response with newly created task data
-        
+            
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); // If needed
+            res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type'); // If needed
+            res.setHeader('Access-Control-Allow-Credentials', true); // If needed
+
+            res.json(taskList);     // Update http request response with newly created task data        
         } else {
             res.status(400).json({
                 code: "invalidCategory",
