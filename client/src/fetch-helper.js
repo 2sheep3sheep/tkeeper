@@ -40,6 +40,9 @@ const FetchHelper = {
         assignSolver: async (dtoIn) => {
             return await Call(baseUri, "task/assignSolver", dtoIn, "post")
         },
+        completeTask: async (dtoIn) => {
+            return await Call(baseUri, "task/markAsCompleted", dtoIn, "post")
+        },
         create: async (dtoIn) => {
             return await Call(baseUri, "task/create", dtoIn, "post")
         }

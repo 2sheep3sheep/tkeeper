@@ -45,7 +45,13 @@ function TaskCard(props) {
                 sx={{
                     alignSelf:"flex-end",
                     //border:"4px solid black"
-                }}>
+                }}
+                onClick={
+                    () => {
+                        props.completeFunction( props.taskID )
+                    }
+                }
+                >
                 <CompleteIcon
                     sx={{
                         fontSize:"40px",

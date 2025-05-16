@@ -16,8 +16,8 @@ function DashboardContent() {
     const { state, data, selectedCategory, setSelectedCategory, solver_data } = useContext( TaskListContext );
 
     const [ createModalOpen, setCreateModalOpen ] = useState(false);
-
     const [ assigningToTaskID, setAssigningToTaskID ] = useState(undefined);
+    const [ completingTaskID, setCompletingTaskID ] = useState(undefined);
 
     let taskcards = [];
 
@@ -54,6 +54,7 @@ function DashboardContent() {
 
                 taskID = {taskData.id}
                 assignFunction = {setAssigningToTaskID}
+                completeFunction = {setCompletingTaskID}
 
             />) )
         }
@@ -141,6 +142,10 @@ function DashboardContent() {
                 //Assign Solver to Task
                 assignSolverToTaskID={assigningToTaskID}
                 setAssignSolverToTaskID={setAssigningToTaskID}
+
+                //Complete task
+                completingTaskID={completingTaskID}
+                setCompletingTaskID={setCompletingTaskID}
             />
 
         </ThemeProvider>

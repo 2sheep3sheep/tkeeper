@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { TaskListContext } from "../data/task-list-provider";
 import { SolverListContext } from "../data/solver-list-provider";
 import SolverAvatar from "../components/solver-avatar";
+import TaskCard from "../components/task-card";
 
 
 function DashboardModals(props) {    
@@ -63,7 +64,21 @@ function DashboardModals(props) {
 
             setSelectedCategory("unsolved")
         }
-        
+
+        setAwaitingServerResponse(false)
+    }
+
+    async function completeTask() {
+        setAwaitingServerResponse(true)
+
+        const result = await FetchHelper.task.completeTask({taskID:props.completingTaskID})
+
+        if (result.ok) {
+            props.setCompletingTaskID(undefined)
+
+            setSelectedCategory("completed")
+        }
+
         setAwaitingServerResponse(false)
     }
 
@@ -309,6 +324,87 @@ function DashboardModals(props) {
                                         }}
                                         onClick={assignSolver}
                                     > <div>Assign</div> </Button>
+                                </Stack>
+                            </CardContent>
+                        </Card>
+                    </div>
+            </Modal>
+
+             
+            <Modal
+                open={props.completingTaskID ? true : false}
+            >
+                <div style = {{
+                        width:"100%",
+                        height:"100%",
+                        justifyContent:"center",
+                        alignContent:"center"
+                    }}
+                    >
+                    <Card variant="outlined"
+                            sx = {{
+                                borderRadius:"10px",
+                                borderWidth:"2px",
+                                width:"400px",
+                                justifySelf:"center",
+                            }}
+
+                        >
+                            <CardContent>
+                                <div class="task-title">Confirm task as Completed?</div>
+
+                                <Divider sx={{my:2}}/>
+                                <Stack
+                                    direction="row"
+                                    sx={{
+                                        justifyContent:"space-between"
+                                    }}
+                                >
+                                    <Button
+                                        disabled={awaitingServerResponse}
+                                        size="large"
+                                        sx={{
+                                            color:"black",
+                                            fontFamily:"monospace",
+                                            backgroundColor:"#CCCCCC",
+                                            alignSelf:"flex-end",
+                                            borderRadius:"80px",
+                                            fontSize:"24px",
+                                            padding:"10px",
+                                            paddingLeft:"20px",
+                                            paddingRight:"20px",
+                                            fontWeight:"400"
+                                        }}
+                                        onClick={ () => {props.setCompletingTaskID(undefined)}}
+                                    > <div>Cancel</div> </Button>
+
+                                    { awaitingServerResponse ? <CircularProgress
+                                        color = "cyan"
+                                        sx={{
+                                            my:1.5
+                                        }}
+                                        style={{
+                                            padding:"0px",
+                                        }}
+                                    /> : null }
+                                    
+                                    <Button
+                                        disabled={awaitingServerResponse}
+                                        size="large"
+                                        sx={{
+                                            color:"black",
+                                            fontFamily:"monospace",
+                                            backgroundColor:"#80DED6",
+                                            alignSelf:"flex-end",
+                                            borderRadius:"80px",
+                                            fontSize:"24px",
+                                            padding:"10px",
+                                            paddingLeft:"20px",
+                                            paddingRight:"20px",
+                                            fontWeight:"400"
+                                        }}
+                                        onClick={completeTask}
+                                    > <div>Confirm</div> </Button>
                                 </Stack>
                             </CardContent>
                         </Card>
