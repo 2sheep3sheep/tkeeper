@@ -24,7 +24,6 @@ function TaskListProvider({children}) {
         }
     )
 
-
     async function handleLoad() {
     
         setTaskListDto(

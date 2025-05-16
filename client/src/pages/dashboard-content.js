@@ -17,6 +17,8 @@ function DashboardContent() {
 
     const [ createModalOpen, setCreateModalOpen ] = useState(false);
 
+    const [ assigningToTaskID, setAssigningToTaskID ] = useState(undefined);
+
     let taskcards = [];
 
     if ( state === "ready" && (data ?? null) != null) {
@@ -49,6 +51,10 @@ function DashboardContent() {
                 }
                 completed = {taskData.completed ?? false}
                 date = { new Date(taskData.date).toLocaleDateString() }
+
+                taskID = {taskData.id}
+                assignFunction = {setAssigningToTaskID}
+
             />) )
         }
     }
@@ -128,8 +134,13 @@ function DashboardContent() {
             </div>
 
             <DashboardModals
+                //Create Task
                 createTaskModal={createModalOpen}
                 setCreateTaskModal={setCreateModalOpen}
+
+                //Assign Solver to Task
+                assignSolverToTaskID={assigningToTaskID}
+                setAssignSolverToTaskID={setAssigningToTaskID}
             />
 
         </ThemeProvider>

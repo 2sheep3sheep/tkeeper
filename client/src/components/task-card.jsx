@@ -17,7 +17,14 @@ function TaskCard(props) {
                 sx={{
                     alignSelf:"flex-end",
                     //border:"4px solid black"
-                }}>
+                }}
+                onClick={
+                    () => {
+                        props.assignFunction( props.taskID )
+                    }
+                }
+                >
+                    
                 <AssignIcon
                     sx={{
                         fontSize:"40px",

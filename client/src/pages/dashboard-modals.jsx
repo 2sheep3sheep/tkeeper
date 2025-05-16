@@ -15,46 +15,25 @@ function DashboardModals(props) {
     let solvers = [];
 
     if ( (solver_data ?? null) != null) {
-        /*
-        for (var i=0; i< solver_data.solvers.length; i++) {
-
-            var solverData = solver_data.solvers[i]
-
-            solvers.push( (<SolverAvatar 
-                show_name={true}
-                solver_name = {solverData.name}    
-            />) )
-        }*/
         solvers = solver_data.solvers    
     }
 
-    const [ newTaskTitle, setNewTaskTitle ] = useState("")
-    const [ newTaskDescription, setNewTaskDescription ] = useState("")
-    const [ newTaskSolver, setNewTaskSolver ] = useState("undefined")
+    const [ newTaskData, setNewTaskData ] = useState(
+        {
+            title:"",
+            description:"",
+            solverID:"undefined"
+        }
+    )
 
-    function updateTaskTitle(event) {
-        setNewTaskTitle(event.target.value)
-    }
-
-    function updateTaskDescription(event) {
-        setNewTaskDescription(event.target.value)
-    }
-
-    function updateTaskSolver(event) {
-        setNewTaskSolver(event.target.value)
-    }
+    const [ newSolver, setNewSolver ] = useState("undefined")
 
     async function createTask() {
-
-        const newTaskData = {
-            title: newTaskTitle,
-            description: newTaskDescription,
-            solverID: (newTaskSolver==="undefined" ? undefined : newTaskSolver)
-        }
 
         //validate client-side input
         console.log(newTaskData);
         if ( newTaskData.title.length===0 ) return;
+        if ( newTaskData.solverID==="undefined") newTaskData.solverID = undefined;
         if ( newTaskData.description && newTaskData.description.length===0 ) newTaskData.description=undefined;
 
         setAwaitingServerResponse(true)
@@ -74,8 +53,22 @@ function DashboardModals(props) {
         setAwaitingServerResponse(false)
     }
 
+    async function assignSolver() {
+        setAwaitingServerResponse(true)
+
+        const result = await FetchHelper.task.assignSolver({taskID:props.assignSolverToTaskID, solverID:newSolver})
+
+        if (result.ok) {
+            props.setAssignSolverToTaskID(undefined)
+
+            setSelectedCategory("unsolved")
+        }
+        
+        setAwaitingServerResponse(false)
+    }
 
     return (
+        <div>
             <Modal
                 open={props.createTaskModal}
             >
@@ -108,8 +101,12 @@ function DashboardModals(props) {
                                 multiline
                                 rows={2}
 
-                                value={newTaskTitle}
-                                onChange={updateTaskTitle}
+                                value={newTaskData.title}
+                                onChange={
+                                    (event) => {setNewTaskData(
+                                        (current) => ({...current, title:event.target.value})    
+                                    )}
+                                }
                                 //error={false}
                                 //helperText="A title is required"
                             />
@@ -122,8 +119,12 @@ function DashboardModals(props) {
                                 rows={4}
                                 style={{width:"100%"}}
 
-                                value={newTaskDescription}
-                                onChange={updateTaskDescription}
+                                value={newTaskData.description}
+                                onChange={
+                                    (event) => {setNewTaskData(
+                                        (current) => ({...current, description:event.target.value})    
+                                    )}
+                                }
                             />
                             
                             <Select
@@ -132,8 +133,12 @@ function DashboardModals(props) {
                                 style={{width:"100%", marginBottom:"18px"}}
                                 //error={false}
                                 //helperText="A title is required"
-                                value={newTaskSolver}
-                                onChange={updateTaskSolver}
+                                value={newTaskData.solverID}
+                                onChange={
+                                    (event) => {setNewTaskData(
+                                        (current) => ({...current, solverID:event.target.value})    
+                                    )}
+                                }
                             >
                                 <MenuItem value="undefined">
                                     <SolverAvatar show_name solver_name="Unassigned" undefined_solver/>
@@ -205,6 +210,111 @@ function DashboardModals(props) {
                     </Card>
                 </div>
             </Modal>
+
+            
+            <Modal
+                open={props.assignSolverToTaskID ? true : false}
+            >
+                <div style = {{
+                        width:"100%",
+                        height:"100%",
+                        justifyContent:"center",
+                        alignContent:"center"
+                    }}
+                    >
+                    <Card variant="outlined"
+                            sx = {{
+                                borderRadius:"10px",
+                                borderWidth:"2px",
+                                width:"400px",
+                                justifySelf:"center",
+                            }}
+
+                        >
+                            <CardContent>
+                                <div class="task-title">Assign Solver</div>
+                                <Divider sx={{my:2}}/>
+                            
+                                <Select
+                                    disabled={awaitingServerResponse}
+                                    variant="outlined" 
+                                    style={{width:"100%", marginBottom:"18px"}}
+                                    //error={false}
+                                    //helperText="A title is required"
+                                    value={newSolver}
+                                    onChange={ (event) => {setNewSolver(event.target.value)} }
+                                >
+                                    <MenuItem value="undefined">
+                                        <SolverAvatar show_name solver_name="Unassigned" undefined_solver/>
+                                    </MenuItem>
+                                    {
+                                        solvers.map(
+                                            (item) => (
+                                                <MenuItem value={item.id}>
+                                                    <SolverAvatar show_name solver_name={item.name}/>
+                                                </MenuItem>
+                                            )
+                                        )
+                                    }
+                                </Select>
+
+                                <Stack
+                                    direction="row"
+                                    sx={{
+                                        justifyContent:"space-between"
+                                    }}
+                                >
+                                    <Button
+                                        disabled={awaitingServerResponse}
+                                        size="large"
+                                        sx={{
+                                            color:"black",
+                                            fontFamily:"monospace",
+                                            backgroundColor:"#CCCCCC",
+                                            alignSelf:"flex-end",
+                                            borderRadius:"80px",
+                                            fontSize:"24px",
+                                            padding:"10px",
+                                            paddingLeft:"20px",
+                                            paddingRight:"20px",
+                                            fontWeight:"400"
+                                        }}
+                                        onClick={ () => {props.setAssignSolverToTaskID(undefined)}}
+                                    > <div>Cancel</div> </Button>
+
+                                    { awaitingServerResponse ? <CircularProgress
+                                        color = "cyan"
+                                        sx={{
+                                            my:1.5
+                                        }}
+                                        style={{
+                                            padding:"0px",
+                                        }}
+                                    /> : null }
+                                    
+                                    <Button
+                                        disabled={awaitingServerResponse}
+                                        size="large"
+                                        sx={{
+                                            color:"black",
+                                            fontFamily:"monospace",
+                                            backgroundColor:"#80DED6",
+                                            alignSelf:"flex-end",
+                                            borderRadius:"80px",
+                                            fontSize:"24px",
+                                            padding:"10px",
+                                            paddingLeft:"20px",
+                                            paddingRight:"20px",
+                                            fontWeight:"400"
+                                        }}
+                                        onClick={assignSolver}
+                                    > <div>Assign</div> </Button>
+                                </Stack>
+                            </CardContent>
+                        </Card>
+                    </div>
+            </Modal>
+        </div>
     )
 }
 
