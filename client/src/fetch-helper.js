@@ -48,6 +48,9 @@ const FetchHelper = {
         }
     },
     solver: {
+        create: async (dtoIn) => {
+            return await Call(baseUri, "solver/create", dtoIn, "post")
+        },
         list: async (dtoIn) => {
             return await Call(baseUri, "solver/list", null, "get")
         }

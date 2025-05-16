@@ -11,6 +11,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { SolverListContext } from "../data/solver-list-provider";
 import { useContext } from "react";
+import SolverModals from "./solver-modals";
+import { useState } from "react";
 
 
 function SolversContent() {
@@ -35,6 +37,8 @@ function SolversContent() {
     const theme = useTheme();
 
     const showCreateLabel = useMediaQuery(theme.breakpoints.up("md"));
+
+    const [ addSolverModal, setAddSolverModal ] = useState(false);
 
     return (
         <div>
@@ -64,9 +68,9 @@ function SolversContent() {
                                 <Stack direction="row">
                                     {item}
                                     <Divider sx={{mx:4, my:0}} />
-                                    <IconButton size="large">
+                                    { /*<IconButton size="large">
                                         <EditIcon/>
-                                    </IconButton>
+                                    </IconButton>*/ }
                                     <IconButton size="large">
                                         <DeleteIcon/>
                                     </IconButton>
@@ -98,12 +102,20 @@ function SolversContent() {
                             padding:"10px",
                             fontWeight:"400"
                         }}
+                        onClick={
+                            () => {setAddSolverModal(true)}
+                        }
                     >
                         <AddIcon style={{fontSize:"50px"}} />
                         { showCreateLabel ? (<div>Add Solver</div>) : null }
                     </Button>
                 </div>
             </div>
+            <SolverModals
+                addSolverModal={addSolverModal}
+                setAddSolverModal={setAddSolverModal}
+            />
+
         </div>
     );
 
