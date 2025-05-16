@@ -1,4 +1,4 @@
-import { Button, CardContent, createTheme, ThemeProvider, useMediaQuery, useTheme, Card, Divider, IconButton } from "@mui/material";
+import { Button, CardContent, createTheme, ThemeProvider, useMediaQuery, useTheme, Card, Divider, IconButton, CircularProgress } from "@mui/material";
 import TaskCard from "../components/task-card";
 import { Grid, Stack } from "@mui/system";
 import AddIcon from "@mui/icons-material/Add"
@@ -25,7 +25,10 @@ function SolversContent() {
 
             var solverData = data.solvers[i]
 
-            solvers.push( (<SolverAvatar show_name={true}/>) )
+            solvers.push( (<SolverAvatar 
+                show_name={true}
+                solver_name = {solverData.name}    
+            />) )
         }
     }
 
@@ -36,6 +39,16 @@ function SolversContent() {
     return (
         <div>
             <div class="dashboard-content">
+                
+                { state === "pending" ? <CircularProgress
+                    color = "cyan"
+                    sx = {{
+                        position:"absolute",
+                        top:"50%",
+                        left:"50%"
+                    }}
+                /> : null }
+                
               <Grid container spacing={2}>
                 { solvers.map( (item) => (
                     <Grid size={{ xs:12, md:12, lg:12, xl:12 }}>

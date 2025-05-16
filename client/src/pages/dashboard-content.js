@@ -1,24 +1,30 @@
-import { Button, CircularProgress, createTheme, ThemeProvider, useMediaQuery, useTheme } from "@mui/material";
+import { Button, CircularProgress, createTheme, Modal, ThemeProvider, useMediaQuery, useTheme } from "@mui/material";
 import TaskCard from "../components/task-card";
 import { Grid, Stack } from "@mui/system";
 import AddIcon from "@mui/icons-material/Add"
-
-import * as React from "react";
 
 import CategorySelector from "../components/category-selector";
 import PageSelector from "../components/page-selector";
 
 import { TaskListContext } from "../data/task-list-provider";
 import { useContext } from "react";
+import DashboardModals from "./dashboard-modals";
+import { useState } from "react";
 
 function DashboardContent() {
 
     const { state, data, selectedCategory, setSelectedCategory } = useContext( TaskListContext );
 
+    const [ createModalOpen, setCreateModalOpen ] = useState(false);
+
     let taskcards = [];
 
     if ( state === "ready" && (data ?? null) != null) {
-        console.log(state)
+
+        data.tasks.sort( (a,b) => { 
+            return new Date(a.date) > new Date(b.date) ? -1 : 1 
+        } )
+
 
         for (var i=0; i< data.tasks.length; i++) {
 
@@ -29,6 +35,7 @@ function DashboardContent() {
                 description = {taskData.description ?? ""}
                 solverID = {taskData.solverID ?? undefined}
                 completed = {taskData.completed ?? false}
+                date = { new Date(taskData.date).toLocaleDateString() }
             />) )
         }
     }
@@ -98,6 +105,7 @@ function DashboardContent() {
                                     padding:"10px",
                                     fontWeight:"400"
                                 }}
+                                onClick={ ()=>{ setCreateModalOpen(true) } }
                             >
                                 <AddIcon style={{fontSize:"50px"}} />
                                 { showCreateLabel ? (<div>Create Task</div>) : null }
@@ -105,6 +113,12 @@ function DashboardContent() {
                     </Stack>
                 </div>
             </div>
+
+            <DashboardModals
+                createTaskModal={createModalOpen}
+                setCreateTaskModal={setCreateModalOpen}
+            />
+
         </ThemeProvider>
     );
 

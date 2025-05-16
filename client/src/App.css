@@ -75,6 +75,13 @@
   font-family: monospace;
 }
 
+.task-date {
+  font-size: 14px;
+  font-weight: 800;
+  font-family: monospace;
+  color:#777777;
+}
+
 .task-description {
   font-size: 16px;
   font-weight: 400;

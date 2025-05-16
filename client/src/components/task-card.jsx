@@ -84,7 +84,8 @@ function TaskCard(props) {
             sx = {{
                 borderRadius:"10px",
                 borderWidth:"2px",
-                height:"200px"
+                height:"200px",
+                height:"220px"
             }}
 
         >
@@ -95,6 +96,7 @@ function TaskCard(props) {
                 <Stack
                     spacing={1}
                 >
+                    
                     <div style={{
                         height:"120px",
                         //marginTop:"16px"
@@ -113,9 +115,11 @@ function TaskCard(props) {
                         {!props.solverID ? assignButton : props.completed ? null : completeButton}
 
                     </Stack>
+                    <div class="task-date">{props.date}</div>
                 </Stack>
             </CardContent>
         </Card>
+        
     );
 
 }

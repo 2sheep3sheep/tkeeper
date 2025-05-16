@@ -2,6 +2,8 @@ async function Call(baseUri, useCase, dtoIn, method) {
 
     let response;
 
+    console.log(dtoIn)
+
     if (!method || method === "get") {
         if (dtoIn) {
             response = await fetch(`${baseUri}/${useCase}?${new URLSearchParams(dtoIn)}`)
@@ -12,7 +14,9 @@ async function Call(baseUri, useCase, dtoIn, method) {
         response = await fetch(`${baseUri}/${useCase}`,
             {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type":"application/json"
+                },
                 body: JSON.stringify(dtoIn)
             }
         );
@@ -32,6 +36,9 @@ const FetchHelper = {
     task: {
         list: async (dtoIn) => {
             return await Call(baseUri, "task/list", dtoIn, "get")
+        },
+        create: async (dtoIn) => {
+            return await Call(baseUri, "task/create", dtoIn, "post")
         }
     },
     solver: {
