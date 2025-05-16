@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, Divider, InputLabel, MenuItem, Modal, Select, Stack, TextField } from "@mui/material";
+import { Button, Card, CardContent, CircularProgress, Divider, InputLabel, MenuItem, Modal, Select, Stack, TextField } from "@mui/material";
 import { useState } from "react";
 import FetchHelper from "../fetch-helper";
 import { useContext } from "react";
@@ -9,6 +9,8 @@ import SolverAvatar from "../components/solver-avatar";
 
 function DashboardModals(props) {    
     const { state, data, selectedCategory, setSelectedCategory, solver_data } = useContext( TaskListContext );
+
+    const [awaitingServerResponse, setAwaitingServerResponse] = useState(false);
 
     let solvers = [];
 
@@ -55,6 +57,8 @@ function DashboardModals(props) {
         if ( newTaskData.title.length===0 ) return;
         if ( newTaskData.description && newTaskData.description.length===0 ) newTaskData.description=undefined;
 
+        setAwaitingServerResponse(true)
+
         const result = await FetchHelper.task.create(newTaskData)
 
         if (result.ok) {
@@ -67,6 +71,7 @@ function DashboardModals(props) {
             setSelectedCategory(createdInCategory)
             data.tasks.push(result.data)
         }
+        setAwaitingServerResponse(false)
     }
 
 
@@ -95,6 +100,7 @@ function DashboardModals(props) {
                             <div class="task-title">Create New Task</div>
                             <Divider sx={{my:2}}/>
                             <TextField
+                                disabled={awaitingServerResponse}
                                 label="Title" 
                                 variant="outlined" 
                                 required 
@@ -108,6 +114,7 @@ function DashboardModals(props) {
                                 //helperText="A title is required"
                             />
                             <TextField
+                                disabled={awaitingServerResponse}
                                 label="Description"
                                 variant="outlined"
                                 sx={{my:2}}
@@ -120,6 +127,7 @@ function DashboardModals(props) {
                             />
                             
                             <Select
+                                disabled={awaitingServerResponse}
                                 variant="outlined" 
                                 style={{width:"100%", marginBottom:"18px"}}
                                 //error={false}
@@ -148,6 +156,7 @@ function DashboardModals(props) {
                                 }}
                             >
                                 <Button
+                                    disabled={awaitingServerResponse}
                                     size="large"
                                     sx={{
                                         color:"black",
@@ -164,7 +173,18 @@ function DashboardModals(props) {
                                     onClick={ () => {props.setCreateTaskModal(false)}}
                                 > <div>Cancel</div> </Button>
 
+                                { awaitingServerResponse ? <CircularProgress
+                                    color = "cyan"
+                                    sx={{
+                                        my:1.5
+                                    }}
+                                    style={{
+                                        padding:"0px",
+                                    }}
+                                /> : null }
+                                
                                 <Button
+                                    disabled={awaitingServerResponse}
                                     size="large"
                                     sx={{
                                         color:"black",
