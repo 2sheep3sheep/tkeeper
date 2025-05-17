@@ -4,14 +4,34 @@ import UndefinedIcon from "@mui/icons-material/Close"
 
 
 import icon0 from "../solver-icons/solver-icon-0.jpg"
-import icon1 from "../solver-icons/solver-icon-1.jpg"
+import icon1 from "../solver-icons/solver-icon-1.png"
 import icon2 from "../solver-icons/solver-icon-2.png"
+import icon3 from "../solver-icons/solver-icon-3.png"
+import icon4 from "../solver-icons/solver-icon-4.png"
+import icon5 from "../solver-icons/solver-icon-5.png"
+
+import icon6 from "../solver-icons/solver-icon-6.png"
+import icon7 from "../solver-icons/solver-icon-7.png"
+import icon8 from "../solver-icons/solver-icon-8.png"
+import icon9 from "../solver-icons/solver-icon-9.png"
+import icon10 from "../solver-icons/solver-icon-10.png"
+import icon11 from "../solver-icons/solver-icon-11.jpg"
 
 function SolverAvatar(props) {
     const icons = [
         icon0,
         icon1,
-        icon2
+        icon2,
+        icon3,
+        icon4,
+        icon5,
+
+        icon6,
+        icon7,
+        icon8,
+        icon9,
+        icon10,
+        icon11
     ]
 
     return (
