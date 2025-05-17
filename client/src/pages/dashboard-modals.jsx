@@ -136,8 +136,14 @@ function DashboardModals(props) {
         const result = await FetchHelper.task.remove({taskID:props.deletingTaskID})
 
         if (result.ok) {
+
+            var deletedTaskIndex = data.tasks.findIndex( (item) => ( item.id === props.deletingTaskID ) );
+            if (deletedTaskIndex != -1) {
+                data.tasks.splice( deletedTaskIndex, 1 )
+            }
+
             props.setDeletingTaskID(undefined)
-            window.location.reload();
+            //window.location.reload();
         }
 
         setAwaitingServerResponse(false)

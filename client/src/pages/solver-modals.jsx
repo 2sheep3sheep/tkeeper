@@ -57,8 +57,15 @@ function SolverModals(props) {
         const result = await FetchHelper.solver.remove({solverID:props.deletingSolverID})
 
         if (result.ok) {
+
+            var deletedSolverIndex = data.solvers.findIndex( (item) => ( item.id === props.deletingSolverID ) );
+            if (deletedSolverIndex != -1) {
+                data.solvers.splice( deletedSolverIndex, 1 )
+            }
+
+
             props.setDeletingSolverID(undefined)
-            window.location.reload();
+            //window.location.reload();
         }
 
         setAwaitingServerResponse(false)

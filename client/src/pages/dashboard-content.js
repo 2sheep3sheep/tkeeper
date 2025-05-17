@@ -53,8 +53,14 @@ function DashboardContent() {
 
             var taskData = data.tasks[i]
 
-            var solver_name = solver_id_map[taskData.solverID] ? solver_id_map[taskData.solverID].name : "Unknown solver"
-            var solver_icon = solver_id_map[taskData.solverID] ? solver_id_map[taskData.solverID].iconID : undefined
+            if (taskData.solverID) {
+                var solver_name = solver_id_map[taskData.solverID] ? solver_id_map[taskData.solverID].name : "Unknown solver"
+                var solver_icon = solver_id_map[taskData.solverID] ? solver_id_map[taskData.solverID].iconID : undefined
+            }else{
+                var solver_name = undefined
+                var solver_icon = undefined
+            }
+
 
             taskcards.push( (<TaskCard
                 title = {taskData.title}
