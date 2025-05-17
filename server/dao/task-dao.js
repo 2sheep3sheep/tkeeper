@@ -22,7 +22,25 @@ function get(taskID) {
         
     } catch (error) {
         if (error.code === "ENOENT") return null;
-        throw { code: "failedToReadSolver", taskID: error.taskID };
+        throw { code: "failedToReadTask", taskID: error.taskID };
+    }
+}
+
+// TASK DELETE METHOD
+function remove(taskID) {
+    try {
+        const filePath = path.join(taskFolderPath, `${taskID}.json`);
+
+        if (fs.existsSync(filePath)) {
+            fs.rmSync( filePath )
+            return { message: `Task ${taskID} successfully removed`};
+        } else {
+            return undefined;
+        }
+        
+    } catch (error) {
+        if (error.code === "ENOENT") return null;
+        throw { code: "failedToResolveTask", taskID: error.taskID };
     }
 }
 
@@ -118,6 +136,7 @@ module.exports = {
     create,
     list,
     get,
+    remove,
     setSolverID,
     setCompletedToTrue
 }

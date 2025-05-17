@@ -129,6 +129,21 @@ function DashboardModals(props) {
         setAwaitingServerResponse(false)
     }
 
+
+    async function deleteTask() {
+        setAwaitingServerResponse(true)
+
+        const result = await FetchHelper.task.remove({taskID:props.deletingTaskID})
+
+        if (result.ok) {
+            props.setDeletingTaskID(undefined)
+            window.location.reload();
+        }
+
+        setAwaitingServerResponse(false)
+    }
+
+
     return (
         <div>
             <Modal
@@ -460,6 +475,87 @@ function DashboardModals(props) {
                                         }}
                                         onClick={completeTask}
                                     > <div>Confirm</div> </Button>
+                                </Stack>
+                            </CardContent>
+                        </Card>
+                    </div>
+            </Modal>
+
+              
+            <Modal
+                open={props.deletingTaskID ? true : false}
+            >
+                <div style = {{
+                        width:"100%",
+                        height:"100%",
+                        justifyContent:"center",
+                        alignContent:"center"
+                    }}
+                    >
+                    <Card variant="outlined"
+                            sx = {{
+                                borderRadius:"10px",
+                                borderWidth:"2px",
+                                width:"400px",
+                                justifySelf:"center",
+                            }}
+
+                        >
+                            <CardContent>
+                                <div class="task-title">Delete Task?</div>
+
+                                <Divider sx={{my:2}}/>
+                                <Stack
+                                    direction="row"
+                                    sx={{
+                                        justifyContent:"space-between"
+                                    }}
+                                >
+                                    <Button
+                                        disabled={awaitingServerResponse}
+                                        size="large"
+                                        sx={{
+                                            color:"black",
+                                            fontFamily:"monospace",
+                                            backgroundColor:"#CCCCCC",
+                                            alignSelf:"flex-end",
+                                            borderRadius:"80px",
+                                            fontSize:"24px",
+                                            padding:"10px",
+                                            paddingLeft:"20px",
+                                            paddingRight:"20px",
+                                            fontWeight:"400"
+                                        }}
+                                        onClick={ () => {props.setDeletingTaskID(undefined)}}
+                                    > <div>Cancel</div> </Button>
+
+                                    { awaitingServerResponse ? <CircularProgress
+                                        color = "cyan"
+                                        sx={{
+                                            my:1.5
+                                        }}
+                                        style={{
+                                            padding:"0px",
+                                        }}
+                                    /> : null }
+                                    
+                                    <Button
+                                        disabled={awaitingServerResponse}
+                                        size="large"
+                                        sx={{
+                                            color:"black",
+                                            fontFamily:"monospace",
+                                            backgroundColor:"#e34e49",
+                                            alignSelf:"flex-end",
+                                            borderRadius:"80px",
+                                            fontSize:"24px",
+                                            padding:"10px",
+                                            paddingLeft:"20px",
+                                            paddingRight:"20px",
+                                            fontWeight:"400"
+                                        }}
+                                        onClick={deleteTask}
+                                    > <div>Delete</div> </Button>
                                 </Stack>
                             </CardContent>
                         </Card>

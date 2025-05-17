@@ -1,6 +1,6 @@
 import { Button, CardContent, createTheme, ThemeProvider, useMediaQuery, useTheme, Card, Divider, IconButton, CircularProgress } from "@mui/material";
 import TaskCard from "../components/task-card";
-import { Grid, Stack } from "@mui/system";
+import { fontStyle, Grid, Stack } from "@mui/system";
 import AddIcon from "@mui/icons-material/Add"
 
 import * as React from "react";
@@ -31,6 +31,8 @@ function SolversContent() {
                 show_name={true}
                 solver_name = {solverData.name}    
                 iconID = {solverData.iconID}
+                width = "50px"
+                height = "50px"
                 style={{
                     width:"250px"
                 }}

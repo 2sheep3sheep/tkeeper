@@ -20,14 +20,14 @@ function DashboardContent() {
 
     const { state, data, selectedCategory, setSelectedCategory } = useContext( TaskListContext );
 
+    // I should have used a single modalState object and passed it into the DashboardModals component, this works however, it is just less compact
     const [ createModalOpen, setCreateModalOpen ] = useState(false);
     const [ assigningToTaskID, setAssigningToTaskID ] = useState(undefined);
     const [ completingTaskID, setCompletingTaskID ] = useState(undefined);
 
-    let taskcards = [];
+    const [ deletingTaskID, setDeletingTaskID ] = useState(undefined);
 
-    console.log(solver_state)
-    console.log(solver_data)
+    let taskcards = [];
 
     if ( state === "ready" && (data ?? null) != null) {
 
@@ -69,6 +69,7 @@ function DashboardContent() {
                 taskID = {taskData.id}
                 assignFunction = {setAssigningToTaskID}
                 completeFunction = {setCompletingTaskID}
+                deleteFunction = {setDeletingTaskID}
 
             />) )
         }
@@ -118,6 +119,21 @@ function DashboardContent() {
                         </div>
                     : null }
 
+                    { state === "ready" && taskcards.length===0 ? 
+                        <div
+                        style = {{
+                            position:"fixed",
+                            width:"100%",
+                            textAlign:"center",
+                            top:"45%",
+                            height:"100%",
+                            color:"#AAAAAA"
+                        }}
+                        class="task-title"
+                        >
+                            There are no tasks here...
+                        </div>
+                    : null }
 
                     <Grid container spacing={2}>
                         { taskcards.map( (item) => (
@@ -175,6 +191,10 @@ function DashboardContent() {
                 //Complete task
                 completingTaskID={completingTaskID}
                 setCompletingTaskID={setCompletingTaskID}
+
+                //Editing task
+                deletingTaskID={deletingTaskID}
+                setDeletingTaskID={setDeletingTaskID}
             />
 
         </ThemeProvider>

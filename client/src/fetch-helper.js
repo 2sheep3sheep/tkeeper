@@ -47,6 +47,9 @@ const FetchHelper = {
         },
         create: async (dtoIn) => {
             return await Call(baseUri, "task/create", dtoIn, "post")
+        },
+        remove: async (dtoIn) => {
+            return await Call(baseUri, "task/delete", dtoIn, "post")
         }
     },
     solver: {

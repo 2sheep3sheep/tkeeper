@@ -92,7 +92,7 @@ function TaskCard(props) {
         </div>
     */
 
-    const iconButtons = null /*(
+    const iconButtons = (
         <div style={{
             position:"relative",
             margin:"0px",
@@ -108,15 +108,17 @@ function TaskCard(props) {
                 padding:"0px",
                 margin:"0px"
             }}>
-                    <IconButton size="small">
-                        <EditIcon fontSize="small"/>
-                    </IconButton>
-                    <IconButton size="small">
+                    <IconButton size="small"
+                        onClick={ () => {props.deleteFunction(props.taskID)} }                    
+                    >
                         <DeleteIcon fontSize="small"/>
                     </IconButton>
+                    {/*<IconButton size="small">
+                        <DeleteIcon fontSize="small"/>
+                    </IconButton>*/}
             </div>
         </div>
-    )*/
+    )
 
     let formattedDescription = ""
     if (props.description) {
@@ -131,7 +133,6 @@ function TaskCard(props) {
                 height:"200px",
                 height:"230px"
             }}
-
         >
             <CardContent>
                 
