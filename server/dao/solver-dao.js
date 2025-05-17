@@ -50,6 +50,23 @@ function create(solver) {
     }
 }
 
+function remove(solverID) {
+    try {
+        const filePath = path.join(solverFolderPath, `${solverID}.json`);
+
+        if (fs.existsSync(filePath)) {
+            fs.rmSync( filePath )
+            return { message: `Solver ${solverID} successfully removed`};
+        } else {
+            return undefined;
+        }
+        
+    } catch (error) {
+        if (error.code === "ENOENT") return null;
+        throw { code: "failedToResolveSolver", solverID: error.solverID };
+    }
+}
+
 
 // LIST ALL SOLVERS
 function list() {
@@ -75,5 +92,6 @@ function list() {
 module.exports = {
     create,
     get,
+    remove,
     list
 }

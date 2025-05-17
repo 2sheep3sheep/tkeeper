@@ -4,6 +4,11 @@ const router = express.Router();
 const CreateAbl = require("../abl/solver/createAbl");
 router.post("/create", CreateAbl);
 
+
+const RemoveAbl = require("../abl/solver/removeAbl");
+router.post("/delete", RemoveAbl);
+
+
 const ListAbl = require("../abl/solver/listAbl");
 router.get("/list", ListAbl);
 

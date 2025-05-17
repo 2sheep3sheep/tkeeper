@@ -1,14 +1,14 @@
 const Ajv = require("ajv");
 const ajv = new Ajv();
 
-const taskDao = require("../../dao/task-dao.js");
+const solverDao = require("../../dao/solver-dao.js");
 
 const schema = {
     type: "object",
     properties: {
-        taskID: { type: "string"}
+        solverID: { type: "string"}
     },
-    required: ["taskID"],
+    required: ["solverID"],
     additionalProperties: false
 };
 
@@ -28,14 +28,14 @@ async function RemoveAbl(req, res) {
             return;  // In case of invalid input, exit function
         }
         
-        // Validate task exist
-        if (deleteRequest.taskID) {
-            const task = taskDao.get(deleteRequest.taskID);
+        // Validate solver exists
+        if (deleteRequest.solverID) {
+            const solver = solverDao.get(deleteRequest.solverID);
 
-            if (!task) {     
+            if (!solver) {     
                 res.status(400).json({
-                    code: "taskDoesNotExist",
-                    message: `task with id ${deleteRequest.taskID} does not exist`
+                    code: "solverDoesNotExist",
+                    message: `solver with id ${deleteRequest.solverID} does not exist`
                 });
                 return;
             }
@@ -43,7 +43,7 @@ async function RemoveAbl(req, res) {
 
 
         try {
-            deleteRequest = taskDao.remove(deleteRequest.taskID)        
+            deleteRequest = solverDao.remove(deleteRequest.solverID)        
         } catch (e) {
             res.status(400).json({
                 ...e,
@@ -53,7 +53,7 @@ async function RemoveAbl(req, res) {
         res.json(deleteRequest);     // Update http request response with newly created task data
 
     } catch (e) {
-        res.status(500).json({ task: e.task});
+        res.status(500).json({ solver: e.solver});
     }
 }
 

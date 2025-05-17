@@ -53,15 +53,18 @@ function DashboardContent() {
 
             var taskData = data.tasks[i]
 
+            var solver_name = solver_id_map[taskData.solverID] ? solver_id_map[taskData.solverID].name : "Unknown solver"
+            var solver_icon = solver_id_map[taskData.solverID] ? solver_id_map[taskData.solverID].iconID : undefined
+
             taskcards.push( (<TaskCard
                 title = {taskData.title}
                 description = {taskData.description ?? ""}
                 solverID = {taskData.solverID}
                 solver_name = {
-                    solver_id_map[taskData.solverID] ? solver_id_map[taskData.solverID].name : undefined
+                    solver_name
                 }
                 solver_icon = {
-                    solver_id_map[taskData.solverID] ? solver_id_map[taskData.solverID].iconID : undefined
+                    solver_icon
                 }
                 completed = {taskData.completed ?? false}
                 date = { new Date(taskData.date).toLocaleDateString() }
@@ -96,7 +99,8 @@ function DashboardContent() {
                 <div class="dashboard-content">
                     
                     
-                    { state === "pending" ? <CircularProgress
+                    { state === "pending" ? 
+                        <CircularProgress
                         color = "cyan"
                         sx = {{
                             position:"absolute",

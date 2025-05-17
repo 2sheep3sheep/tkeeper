@@ -52,7 +52,7 @@ function SolverAvatar(props) {
                 </Avatar>
                 :
                 <Avatar 
-                    src={icons[ (props.iconID ?? 0)%icons.length ]}
+                    src={ props.iconID ? icons[ (props.iconID ?? 0)%icons.length ] : null} 
                     sx={{ 
                     bgcolor:"#ff00aa",
                     width:(props.width),
