@@ -41,7 +41,7 @@ function TaskListProvider({children}) {
                 if (result.ok) {
                     return { ...current, state:"ready", data: result.data, error:null };
                 }else{
-                    return { ...current, state:"error", error: result.data};
+                    return { ...current, state:"error", data: result.data, error: result.data};
                 }
             }
         )
@@ -53,7 +53,7 @@ function TaskListProvider({children}) {
         () => { handleLoad(); }, [selectedCategory]
     )
 
-
+/*
     async function handleSolverLoad() {
     
         setSolverListDto(
@@ -79,14 +79,13 @@ function TaskListProvider({children}) {
     }
     useEffect(
         () => { handleSolverLoad() }, []
-    )
+    )*/
 
     const value = {
         ...taskListDto,
         selectedCategory,
         setSelectedCategory,
         handlerMap: { handleLoad },
-        solver_data: solverListDto.data
     }
 
     return (

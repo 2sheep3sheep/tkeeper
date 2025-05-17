@@ -2,16 +2,28 @@ import { Button, Card, CardContent, CircularProgress, Divider, InputLabel, MenuI
 import { useState } from "react";
 import FetchHelper from "../fetch-helper";
 import { useContext } from "react";
-import { TaskListContext } from "../data/task-list-provider";
+import TaskListProvider, { TaskListContext } from "../data/task-list-provider";
 import { SolverListContext } from "../data/solver-list-provider";
 import SolverAvatar from "../components/solver-avatar";
 import TaskCard from "../components/task-card";
 
 
 function DashboardModals(props) {    
-    const { state, data, selectedCategory, setSelectedCategory, solver_data } = useContext( TaskListContext );
+    const { state, data, selectedCategory, setSelectedCategory } = useContext( TaskListContext );
+
+    const solver_context = useContext( SolverListContext );
+    const solver_data = solver_context.data;
 
     const [awaitingServerResponse, setAwaitingServerResponse] = useState(false);
+
+    const [ createValidationObject, setCreateValidationObject ] = useState(
+        {
+            valid:true,
+            title_error:undefined,
+            description_error:undefined
+        }
+    );
+
 
     let solvers = [];
 
@@ -31,9 +43,38 @@ function DashboardModals(props) {
 
     async function createTask() {
 
+        setCreateValidationObject( (current) => ( {
+            valid:true,
+            title_error:undefined,
+            description_error:undefined
+        }) )
+
         //validate client-side input
         console.log(newTaskData);
-        if ( newTaskData.title.length===0 ) return;
+        if ( newTaskData.title.length===0 ) {
+            setCreateValidationObject( (current) => ( {
+                ...current,
+                valid:false,
+                title_error:"A title is required",
+            }) )
+        }
+        if ( newTaskData.title.length>128 ) {
+            setCreateValidationObject( (current) => ( {
+                ...current,
+                valid:false,
+                title_error:"Maximum length is 128 characters",
+            }) )
+        }
+        if ( newTaskData.description.length>512 ) {
+            setCreateValidationObject( (current) => ( {
+                ...current,
+                valid:false,
+                description_error:"Maximum length is 512 characters",
+            }) )
+        }
+        
+        if ( createValidationObject.valid === false ) return;
+
         if ( newTaskData.solverID==="undefined") newTaskData.solverID = undefined;
         if ( newTaskData.description && newTaskData.description.length===0 ) newTaskData.description=undefined;
 
@@ -48,8 +89,13 @@ function DashboardModals(props) {
             if ( !result.data.solverID ) createdInCategory = "unassigned";
             if ( result.data.solverID ) createdInCategory = "unsolved";
 
-            setSelectedCategory(createdInCategory)
+            setSelectedCategory(createdInCategory);
             data.tasks.push(result.data)
+            setNewTaskData({
+                title:"",
+                description:"",
+                solverID:"undefined"
+            })
         }
         setAwaitingServerResponse(false)
     }
@@ -63,6 +109,7 @@ function DashboardModals(props) {
             props.setAssignSolverToTaskID(undefined)
 
             setSelectedCategory("unsolved")
+            setNewSolver("undefined")
         }
 
         setAwaitingServerResponse(false)
@@ -76,7 +123,7 @@ function DashboardModals(props) {
         if (result.ok) {
             props.setCompletingTaskID(undefined)
 
-            setSelectedCategory("completed")
+            setSelectedCategory("completed");
         }
 
         setAwaitingServerResponse(false)
@@ -107,12 +154,15 @@ function DashboardModals(props) {
                         <CardContent>
                             <div class="task-title">Create New Task</div>
                             <Divider sx={{my:2}}/>
+
+                            <div class="task-description">Task Title</div>
+
                             <TextField
                                 disabled={awaitingServerResponse}
-                                label="Title" 
+                                //label="Title" 
                                 variant="outlined" 
                                 required 
-                                style={{width:"100%"}}
+                                style={{width:"100%", marginTop:"18px", marginBottom:"18px"}}
                                 multiline
                                 rows={2}
 
@@ -122,17 +172,18 @@ function DashboardModals(props) {
                                         (current) => ({...current, title:event.target.value})    
                                     )}
                                 }
-                                //error={false}
-                                //helperText="A title is required"
+                                error={ (createValidationObject.title_error) }
+                                helperText={ createValidationObject.title_error }
                             />
+                            <div class="task-description">Task Description</div>
                             <TextField
                                 disabled={awaitingServerResponse}
-                                label="Description"
+                                //label="Description"
                                 variant="outlined"
                                 sx={{my:2}}
                                 multiline
                                 rows={4}
-                                style={{width:"100%"}}
+                                style={{width:"100%", marginTop:"18px"}}
 
                                 value={newTaskData.description}
                                 onChange={
@@ -140,12 +191,15 @@ function DashboardModals(props) {
                                         (current) => ({...current, description:event.target.value})    
                                     )}
                                 }
+                                error={ (createValidationObject.description_error) }
+                                helperText={ createValidationObject.description_error }
                             />
                             
+                            <div class="task-description">Assigned Solver</div>
                             <Select
                                 disabled={awaitingServerResponse}
                                 variant="outlined" 
-                                style={{width:"100%", marginBottom:"18px"}}
+                                style={{width:"100%", marginTop:"18px", marginBottom:"18px"}}
                                 //error={false}
                                 //helperText="A title is required"
                                 value={newTaskData.solverID}

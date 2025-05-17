@@ -31,6 +31,9 @@ function SolversContent() {
                 show_name={true}
                 solver_name = {solverData.name}    
                 iconID = {solverData.iconID}
+                style={{
+                    width:"250px"
+                }}
             />) )
         }
     }

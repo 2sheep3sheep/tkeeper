@@ -25,11 +25,11 @@ function Dashboard() {
     )
 
     return (
-        <TaskListProvider>
-            <SolverListProvider>
+        <SolverListProvider>
+            <TaskListProvider>
                 <DashboardContent/>
-            </SolverListProvider>
-        </TaskListProvider>
+            </TaskListProvider>
+        </SolverListProvider>
     );
 
 }

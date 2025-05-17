@@ -10,10 +10,15 @@ import { TaskListContext } from "../data/task-list-provider";
 import { useContext } from "react";
 import DashboardModals from "./dashboard-modals";
 import { useState } from "react";
+import { SolverListContext } from "../data/solver-list-provider";
 
 function DashboardContent() {
 
-    const { state, data, selectedCategory, setSelectedCategory, solver_data } = useContext( TaskListContext );
+    const solver_context = useContext( SolverListContext );
+    const solver_state = solver_context.state;
+    const solver_data = solver_context.data;
+
+    const { state, data, selectedCategory, setSelectedCategory } = useContext( TaskListContext );
 
     const [ createModalOpen, setCreateModalOpen ] = useState(false);
     const [ assigningToTaskID, setAssigningToTaskID ] = useState(undefined);
@@ -21,17 +26,23 @@ function DashboardContent() {
 
     let taskcards = [];
 
+    console.log(solver_state)
+    console.log(solver_data)
+
     if ( state === "ready" && (data ?? null) != null) {
 
         // Solver ID to solver data map 
         let solver_id_map = {}
 
-        if (solver_data && solver_data.solvers) {
-            for (var s=0; s<solver_data.solvers.length; s++) {
-                var solver = solver_data.solvers[s]
-                solver_id_map[solver.id] = {...solver}
+        if ( solver_state === "ready" ) {
+            if (solver_data && solver_data.solvers) {
+                for (var s=0; s<solver_data.solvers.length; s++) {
+                    var solver = solver_data.solvers[s]
+                    solver_id_map[solver.id] = {...solver}
+                }
             }
         }
+
         //
 
         data.tasks.sort( (a,b) => { 
@@ -92,6 +103,21 @@ function DashboardContent() {
                             left:"50%"
                         }}
                     /> : null }
+
+                    
+                    { state === "error" ? 
+                        <div
+                        style = {{
+                            justifySelf:"center",
+                            alignSelf:"center",
+                            textAlign:"center"
+                        }}
+                        class="task-title"
+                        >
+                            Something went wrong...
+                        </div>
+                    : null }
+
 
                     <Grid container spacing={2}>
                         { taskcards.map( (item) => (

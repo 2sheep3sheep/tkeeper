@@ -21,6 +21,7 @@ function SolverAvatar(props) {
             sx={{
                 alignItems: "center",
             }}
+            style={props.style}
         >
             {
                 props.undefined_solver ? 

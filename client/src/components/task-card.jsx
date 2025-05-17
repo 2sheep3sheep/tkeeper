@@ -92,6 +92,32 @@ function TaskCard(props) {
         </div>
     */
 
+    const iconButtons = null /*(
+        <div style={{
+            position:"relative",
+            margin:"0px",
+            padding:"0px",
+            borderWidth:"0px"
+        }}
+        >
+            <div style={{
+                position:"absolute",
+                top:"-8px",
+                right:"-8px",
+                width:"max-content",
+                padding:"0px",
+                margin:"0px"
+            }}>
+                    <IconButton size="small">
+                        <EditIcon fontSize="small"/>
+                    </IconButton>
+                    <IconButton size="small">
+                        <DeleteIcon fontSize="small"/>
+                    </IconButton>
+            </div>
+        </div>
+    )*/
+
     let formattedDescription = ""
     if (props.description) {
         formattedDescription = (props.description.split("\n").map( (item) => { return (<span>{item}<br/></span>) } ) )
@@ -109,7 +135,7 @@ function TaskCard(props) {
         >
             <CardContent>
                 
-                {null}
+                {iconButtons}
 
                 <Stack
                     spacing={1}

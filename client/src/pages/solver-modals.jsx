@@ -74,12 +74,15 @@ function SolverModals(props) {
                         <CardContent>
                             <div class="task-title">Add New Solver</div>
                             <Divider sx={{my:2}}/>
+                            
+                            <div class="task-description">Name</div>
+
                             <TextField
                                 disabled={awaitingServerResponse}
-                                label="Name" 
+                                //label="Name" 
                                 variant="outlined" 
                                 required 
-                                style={{width:"100%", marginBottom:"18px"}}
+                                style={{width:"100%", marginTop:"18px", marginBottom:"18px"}}
 
                                 value={newSolverData.name}
                                 onChange={

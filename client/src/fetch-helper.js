@@ -2,31 +2,33 @@ async function Call(baseUri, useCase, dtoIn, method) {
 
     let response;
 
-    console.log(dtoIn)
-
-    if (!method || method === "get") {
-        if (dtoIn) {
-            response = await fetch(`${baseUri}/${useCase}?${new URLSearchParams(dtoIn)}`)
-        } else {
-            response = await fetch(`${baseUri}/${useCase}`)
-        }
-    } else {
-        response = await fetch(`${baseUri}/${useCase}`,
-            {
-                method: "POST",
-                headers: { 
-                    "Content-Type":"application/json"
-                },
-                body: JSON.stringify(dtoIn)
+    try {
+        if (!method || method === "get") {
+            if (dtoIn) {
+                response = await fetch(`${baseUri}/${useCase}?${new URLSearchParams(dtoIn)}`)
+            } else {
+                response = await fetch(`${baseUri}/${useCase}`)
             }
-        );
+        } else {
+            response = await fetch(`${baseUri}/${useCase}`,
+                {
+                    method: "POST",
+                    headers: { 
+                        "Content-Type":"application/json"
+                    },
+                    body: JSON.stringify(dtoIn)
+                }
+            );
+        }
+
+        const data = await response.json();
+
+        console.log(data);
+
+        return { ok: response.ok, status: response.status, data };
+    } catch (e) {
+        return { ok: false, status: "error"}
     }
-
-    const data = await response.json();
-
-    console.log(data);
-
-    return { ok: response.ok, status: response.status, data };
 
 }
 

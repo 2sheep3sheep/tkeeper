@@ -15,8 +15,6 @@ const schema = {
 
 async function CreateAbl(req, res) {
     
-    console.log(req.body);
-    
     try {
         let solver = req.body;
 
