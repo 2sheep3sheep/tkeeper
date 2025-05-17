@@ -49,6 +49,21 @@ function SolverModals(props) {
         setAwaitingServerResponse(false)
     }
 
+
+
+    async function deleteSolver() {
+        setAwaitingServerResponse(true)
+
+        const result = await FetchHelper.solver.remove({solverID:props.deletingSolverID})
+
+        if (result.ok) {
+            props.setDeletingSolverID(undefined)
+            window.location.reload();
+        }
+
+        setAwaitingServerResponse(false)
+    }
+
     return (
         <div>
             <Modal
@@ -215,7 +230,87 @@ function SolverModals(props) {
                     </Card>
                 </div>
             </Modal>
+  
+            <Modal
+                open={props.deletingSolverID ? true : false}
+            >
+                <div style = {{
+                        width:"100%",
+                        height:"100%",
+                        justifyContent:"center",
+                        alignContent:"center"
+                    }}
+                    >
+                    <Card variant="outlined"
+                            sx = {{
+                                borderRadius:"10px",
+                                borderWidth:"2px",
+                                width:"400px",
+                                justifySelf:"center",
+                            }}
 
+                        >
+                            <CardContent>
+                                <div class="task-title">Delete Solver?</div>
+
+                                <div class="task-description">Tasks assigned to this solver will not be deleted and cannot be reassigned</div>
+                                <Divider sx={{my:2}}/>
+                                <Stack
+                                    direction="row"
+                                    sx={{
+                                        justifyContent:"space-between"
+                                    }}
+                                >
+                                    <Button
+                                        disabled={awaitingServerResponse}
+                                        size="large"
+                                        sx={{
+                                            color:"black",
+                                            fontFamily:"monospace",
+                                            backgroundColor:"#CCCCCC",
+                                            alignSelf:"flex-end",
+                                            borderRadius:"80px",
+                                            fontSize:"24px",
+                                            padding:"10px",
+                                            paddingLeft:"20px",
+                                            paddingRight:"20px",
+                                            fontWeight:"400"
+                                        }}
+                                        onClick={ () => {props.setDeletingSolverID(undefined)}}
+                                    > <div>Cancel</div> </Button>
+
+                                    { awaitingServerResponse ? <CircularProgress
+                                        color = "cyan"
+                                        sx={{
+                                            my:1.5
+                                        }}
+                                        style={{
+                                            padding:"0px",
+                                        }}
+                                    /> : null }
+                                    
+                                    <Button
+                                        disabled={awaitingServerResponse}
+                                        size="large"
+                                        sx={{
+                                            color:"black",
+                                            fontFamily:"monospace",
+                                            backgroundColor:"#e34e49",
+                                            alignSelf:"flex-end",
+                                            borderRadius:"80px",
+                                            fontSize:"24px",
+                                            padding:"10px",
+                                            paddingLeft:"20px",
+                                            paddingRight:"20px",
+                                            fontWeight:"400"
+                                        }}
+                                        onClick={deleteSolver}
+                                    > <div>Delete</div> </Button>
+                                </Stack>
+                            </CardContent>
+                        </Card>
+                    </div>
+            </Modal>
         </div>
     )
 }

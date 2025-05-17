@@ -58,6 +58,9 @@ const FetchHelper = {
         },
         list: async (dtoIn) => {
             return await Call(baseUri, "solver/list", null, "get")
+        },
+        remove: async (dtoIn) => {
+            return await Call(baseUri, "solver/delete", dtoIn, "post")
         }
     }
 }

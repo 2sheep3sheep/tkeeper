@@ -19,6 +19,7 @@ function SolversContent() {
 
     const { state, data } = useContext( SolverListContext );
 
+
     let solvers = [];
 
     if ( state === "ready" && (data ?? null) != null) {
@@ -29,6 +30,7 @@ function SolversContent() {
 
             solvers.push( (<SolverAvatar 
                 show_name={true}
+                solverID={solverData.id}
                 solver_name = {solverData.name}    
                 iconID = {solverData.iconID}
                 width = "50px"
@@ -45,6 +47,8 @@ function SolversContent() {
     const showCreateLabel = useMediaQuery(theme.breakpoints.up("md"));
 
     const [ addSolverModal, setAddSolverModal ] = useState(false);
+
+    const [ deletingSolverID, setDeletingSolverID ] = useState(undefined);
 
     return (
         <div>
@@ -77,7 +81,10 @@ function SolversContent() {
                                     { /*<IconButton size="large">
                                         <EditIcon/>
                                     </IconButton>*/ }
-                                    <IconButton size="large">
+                                    <IconButton 
+                                        size="large"
+                                        onClick={ ()=>{setDeletingSolverID(item.props.solverID)} }
+                                        >
                                         <DeleteIcon/>
                                     </IconButton>
                                 </Stack>
@@ -120,6 +127,9 @@ function SolversContent() {
             <SolverModals
                 addSolverModal={addSolverModal}
                 setAddSolverModal={setAddSolverModal}
+
+                deletingSolverID={deletingSolverID}
+                setDeletingSolverID={setDeletingSolverID}
             />
 
         </div>
